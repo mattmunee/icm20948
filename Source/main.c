@@ -16,7 +16,7 @@ ICM_20948_WHO_AM_I_t getWhoAmI(unsigned short adapter_number, long device_addres
         /* ERROR HANDLING; you can check errno to see what went wrong */
         exit(1);
     }
-    if (ioctl(file,I2C_SLAVE,addr) < 0) {
+    if (ioctl(file,I2C_SLAVE,device_address) < 0) {
         printf("Failed to acquire bus access and/or talk to slave.\n");
         /* ERROR HANDLING; you can check errno to see what went wrong */
         exit(1);
@@ -31,12 +31,10 @@ ICM_20948_WHO_AM_I_t getWhoAmI(unsigned short adapter_number, long device_addres
 	res = i2c_smbus_read_word_data(file, reg);
 	if (res < 0) {
 		/* ERROR HANDLING: i2c transaction failed */
-		} else {
-			printf("Result at register %02x: %02x\n",reg,res);
-			res_t.WHO_AM_I = (uint8_t)((res >> WHO_AM_I_BIT_INDEX) & WHO_AM_I_BIT_MASK);
-			return res_t;
-			}
-		}
+	} else {
+		printf("Result at register %02x: %02x\n",reg,res);
+		res_t.WHO_AM_I = (uint8_t)((res >> WHO_AM_I_BIT_INDEX) & WHO_AM_I_BIT_MASK);
+		return res_t;
 	}
 }
 /* main.c */
