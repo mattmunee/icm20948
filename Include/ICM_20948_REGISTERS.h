@@ -779,6 +779,12 @@ typedef struct{
 	uint8_t reserved_1                 : 2;
 }ICM_20948_REG_BANK_SEL_t;
 
+typedef enum {
+	USER_BANK_BIT_INDEX = 4,
+
+	USER_BANK_BIT_MASK = 0x03
+}ICM_20948_REG_BANK_SEL_BITMASKS;
+
 #ifdef __cplusplus
 }
 #endif	/* __cplusplus */

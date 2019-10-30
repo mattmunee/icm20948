@@ -11,7 +11,8 @@ typedef enum {
 	FAILED_TO_OPEN_ADAPTER,
 	FAILED_TO_TALK_TO_SLAVE,
 	FAILED_TO_READ_WORD_DATA,
-	DEVICE_NOT_OPEN
+	DEVICE_NOT_OPEN,
+	INVALID_USER_BANK
 }Icm20948ErrorCodes;
 
 class Icm20948Device {
@@ -37,6 +38,11 @@ private:
 		unsigned short user_bank, 
 		ICM_20948_REGISTER_MAP register_name,
 		__s32& data);
+	Icm20948ErrorCodes writeRegister(
+		unsigned short user_bank,
+		ICM_20948_REGISTER_MAP register_name,
+		__u8 data);
+	Icm20948ErrorCodes selectUserBank(unsigned short user_bank);
 };
 
 #endif
