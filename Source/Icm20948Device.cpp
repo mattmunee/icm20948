@@ -131,9 +131,6 @@ Icm20948ErrorCodes Icm20948Device::getAcceleration(std::vector<float>& accel)
 	case ACCEL_FS_16G:
 		sf = 1.0 / 2048.0;
 		break;
-	case ACCEL_FS_NOT_SET:
-		return INVALID_ACCEL_RANGE;
-		break;
 	}
 
 	accel[0] = sf * (float)raw_accel[0];
@@ -308,7 +305,7 @@ Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
 	uint16_t thisdata = ((accel_fs_sel & ACCEL_FS_SEL_BIT_MASK) << ACCEL_FS_SEL_BIT_INDEX);
 	data = (data & ~(ACCEL_FS_SEL_BIT_MASK << ACCEL_FS_SEL_BIT_INDEX)) | thisdata;
 
-	success = writeRegister(0, REG_ACCEL_CONFIG, data);
+	success = writeRegister(2, REG_ACCEL_CONFIG, data);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to write Accel FS register." << std::endl;
 		return success;
