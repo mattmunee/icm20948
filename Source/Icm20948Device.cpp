@@ -42,7 +42,12 @@ Icm20948ErrorCodes Icm20948Device::sleep(bool sleepOrWake)
 		return success;
 	}
 	else {
-		data |= (((sleepOrWake ? 0x01 : 0x00) & SLEEP_BIT_MASK) << SLEEP_BIT_INDEX);
+		uint16_t thisdata = (((sleepOrWake ? 0x01 : 0x00) & SLEEP_BIT_MASK) << SLEEP_BIT_INDEX);
+		debugStream_<<"This:0x"<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(thisdata)<<std::endl;
+		debugStream_<<"Orig:0x"<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(data)<<std::endl;
+		data = (data & ~(SLEEP_BIT_MASK << SLEEP_BIT_INDEX ) ) | thisdata;
+		debugStream_<<"Data:0x"<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(data)<<std::endl;
+
 		return writeRegister(0, REG_PWR_MGMT_1, data);
 	}
 
@@ -92,7 +97,7 @@ Icm20948ErrorCodes Icm20948Device::getRawAcceleration(std::vector<int16_t>& acce
 		return success;
 	}
 
-	accel[3] = (dataH << 8) | (dataL);
+	accel[2] = (dataH << 8) | (dataL);
 
 	return SUCCESS;
 }
@@ -146,8 +151,8 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 	}
 	else {
 		debugStream_ << "Successfully read data from register "
-			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << register_name 
-			<< ": Data = "<< "0x" << std::hex << std::setw(2) << std::setfill('0') << data << std::endl;
+			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(register_name) 
+			<< ": Data = "<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
 	}
 
 	return SUCCESS;
@@ -170,8 +175,8 @@ Icm20948ErrorCodes Icm20948Device::writeRegister(
 	}
 
 	debugStream_ << "Writing data to register "
-		<< "0x" << std::hex << std::setw(2) << std::setfill('0') << register_name
-		<< ": Data = " << "0x" << std::hex << std::setw(2) << std::setfill('0') << data << std::endl;
+		<< "0x" << std::hex << std::setw(2) << std::setfill('0') <<unsigned(register_name)
+		<< ": Data = " << "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
 
 	__s32 ret = i2c_smbus_write_byte_data(device_file_, register_name, data);
 	if (ret < 0) {
