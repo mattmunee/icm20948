@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "ICM_20948_REGISTERS.h"
+#include "Icm20948Device.hpp"
 
 ICM_20948_WHO_AM_I_t getWhoAmI(unsigned short adapter_number, long device_address){
 	int file;
