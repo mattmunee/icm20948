@@ -9,7 +9,8 @@ int main(int argc, char *argv[]) {
 
 	Icm20948Device dev(1,0x68);
 	Icm20948ErrorCodes success;
-	std::vector<int16_t> accel = {0,0,0};
+	std::vector<int16_t> rawaccel = {0,0,0};
+	std::vector<float> accel = { 0.0,0.0,0.0 };
 	success = dev.openDevice();
 	if (SUCCESS != success) {
 		std::cout << "Error! Failed to open device: " << success << std::endl;
@@ -27,21 +28,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Result of Who Am I?: " 
 			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(whoIsDev.WHO_AM_I) << std::endl;
 	}
-	
-	std::cout<<"Sleep"<<std::endl;
-	success = dev.sleep(true);
-	if (SUCCESS != success) {
-		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
-	}
-
-	success = dev.getRawAcceleration(accel);
-	if (SUCCESS != success) {
-		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
-	}
-	else {
-		std::cout.flags(f);
-		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
-	}
 
 	std::cout<<"Wake"<<std::endl;
 	success = dev.sleep(false);
@@ -49,43 +35,118 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	success = dev.getRawAcceleration(accel);
+	success = dev.getRawAcceleration(rawaccel);
 	if (SUCCESS != success) {
-		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Raw Accel: " << rawaccel[0] << ", " << rawaccel[1] << ", " << rawaccel[2] << std::endl;
 	}
 
-	std::cout<<"Sleep"<<std::endl;
-	success = dev.sleep(true);
+	success = dev.getAcceleration(accel);
 	if (SUCCESS != success) {
-		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
-	}
-
-	success = dev.getRawAcceleration(accel);
-	if (SUCCESS != success) {
-		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 
-	std::cout<<"Wake"<<std::endl;
-	success = dev.sleep(false);
+	std::cout << "Set Scale to 4G" << std::endl;
+	success = dev.setAccelFS(ACCEL_FS_4G);
 	if (SUCCESS != success) {
-		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
+		std::cout << "Failed set accel scale! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	success = dev.getRawAcceleration(accel);
+	success = dev.getRawAcceleration(rawaccel);
 	if (SUCCESS != success) {
-		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Raw Accel: " << rawaccel[0] << ", " << rawaccel[1] << ", " << rawaccel[2] << std::endl;
+	}
+
+	success = dev.getAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+
+	std::cout << "Set Scale to 8G" << std::endl;
+	success = dev.setAccelFS(ACCEL_FS_8G);
+	if (SUCCESS != success) {
+		std::cout << "Failed set accel scale! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	success = dev.getRawAcceleration(rawaccel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << rawaccel[0] << ", " << rawaccel[1] << ", " << rawaccel[2] << std::endl;
+	}
+
+	success = dev.getAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+
+	std::cout << "Set Scale to 16G" << std::endl;
+	success = dev.setAccelFS(ACCEL_FS_16G);
+	if (SUCCESS != success) {
+		std::cout << "Failed set accel scale! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	success = dev.getRawAcceleration(rawaccel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << rawaccel[0] << ", " << rawaccel[1] << ", " << rawaccel[2] << std::endl;
+	}
+
+	success = dev.getAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+
+	std::cout << "Set Scale to 2G" << std::endl;
+	success = dev.setAccelFS(ACCEL_FS_2G);
+	if (SUCCESS != success) {
+		std::cout << "Failed set accel scale! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	success = dev.getRawAcceleration(rawaccel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << rawaccel[0] << ", " << rawaccel[1] << ", " << rawaccel[2] << std::endl;
+	}
+
+	success = dev.getAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get raw accel! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 		
     return 0;

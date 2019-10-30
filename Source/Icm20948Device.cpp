@@ -43,10 +43,7 @@ Icm20948ErrorCodes Icm20948Device::sleep(bool sleepOrWake)
 	}
 	else {
 		uint16_t thisdata = (((sleepOrWake ? 0x01 : 0x00) & SLEEP_BIT_MASK) << SLEEP_BIT_INDEX);
-		debugStream_<<"This:0x"<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(thisdata)<<std::endl;
-		debugStream_<<"Orig:0x"<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(data)<<std::endl;
 		data = (data & ~(SLEEP_BIT_MASK << SLEEP_BIT_INDEX ) ) | thisdata;
-		debugStream_<<"Data:0x"<<std::hex<<std::setw(2)<<std::setfill('0')<<unsigned(data)<<std::endl;
 
 		return writeRegister(0, REG_PWR_MGMT_1, data);
 	}
@@ -98,6 +95,50 @@ Icm20948ErrorCodes Icm20948Device::getRawAcceleration(std::vector<int16_t>& acce
 	}
 
 	accel[2] = (dataH << 8) | (dataL);
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::getAcceleration(std::vector<float>& accel)
+{
+	Icm20948ErrorCodes success;
+	std::vector<int16_t> raw_accel = { 0,0,0 };
+	success = getRawAcceleration(raw_accel);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to get raw acceleration!" << std::endl;
+		return success;
+	}
+
+	AccelScale accel_fs;
+	success = getAccelFS(accel_fs);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to get Accel FS!" << std::endl;
+		return success;
+	}
+
+	float sf = 1.0;
+	switch (accel_fs)
+	{
+	case ACCEL_FS_2G:
+		sf = 1.0 / 16384.0;
+		break;
+	case ACCEL_FS_4G:
+		sf = 1.0 / 8192.0;
+		break;
+	case ACCEL_FS_8G:
+		sf = 1.0 / 4096.0;
+		break;
+	case ACCEL_FS_16G:
+		sf = 1.0 / 2048.0;
+		break;
+	case ACCEL_FS_NOT_SET:
+		return INVALID_ACCEL_RANGE;
+		break;
+	}
+
+	accel[0] = sf * (float)raw_accel[0];
+	accel[1] = sf * (float)raw_accel[1];
+	accel[2] = sf * (float)raw_accel[2];
 
 	return SUCCESS;
 }
@@ -217,6 +258,71 @@ Icm20948ErrorCodes Icm20948Device::selectUserBank(unsigned short user_bank)
 	else {
 		debugStream_ << "Successfully wrote data to register." << std::endl;
 	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
+{
+	if (accel_fs_sel_ != ACCEL_FS_NOT_SET) {
+		debugStream_ << "Accel FS already set. Returning memorized value." << std::endl;
+		accel_fs_sel = accel_fs_sel_;
+		return SUCCESS;
+	}
+
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
+	}
+
+	uint8_t data;
+	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_CONFIG, data);
+
+	if (!success) {
+		debugStream_ << "Failed to read Accel FS register." << std::endl;
+		return success;
+	}
+
+	accel_fs_sel = (AccelScale)((data >> ACCEL_FS_SEL_BIT_INDEX) & ACCEL_FS_SEL_BIT_MASK);
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
+{
+	if (accel_fs_sel == accel_fs_sel_) {
+		debugStream_ << "Accel FS unchanged." << std::endl;
+		return SUCCESS;
+	}
+
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
+	}
+
+	if (!(accel_fs_sel >= 0 && accel_fs_sel <= 3)) {
+		debugStream_ << "Invalid Accel Range.  Must be 0-3." << std::endl;
+		return INVALID_ACCEL_RANGE;
+	}
+
+	uint8_t data;
+	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_CONFIG, data);
+
+	if (!success) {
+		debugStream_ << "Failed to read Accel FS register." << std::endl;
+		return success;
+	}
+
+	uint16_t thisdata = ((accel_fs_sel & ACCEL_FS_SEL_BIT_MASK) << ACCEL_FS_SEL_BIT_INDEX);
+	data = (data & ~(ACCEL_FS_SEL_BIT_MASK << ACCEL_FS_SEL_BIT_INDEX)) | thisdata;
+
+	success = writeRegister(0, REG_ACCEL_CONFIG, data);
+	if (!success) {
+		debugStream_ << "Failed to write Accel FS register." << std::endl;
+		return success;
+	}
+
+	accel_fs_sel_ = accel_fs_sel;
 
 	return SUCCESS;
 }

@@ -702,6 +702,16 @@ typedef struct{
 	uint8_t reserved_0                 : 2;
 }ICM_20948_ACCEL_CONFIG_t;
 
+typedef enum {
+	ACCEL_FCHOICE_BIT_INDEX = 0,
+	ACCEL_FS_SEL_BIT_INDEX = 1,
+	ACCEL_DLPFCFG_BIT_INDEX = 3,
+
+	ACCEL_FCHOICE_BIT_MASK = 0x01,
+	ACCEL_FS_SEL_BIT_MASK = 0x03,
+	ACCEL_DLPFCFG_BIT_MASK = 0x07
+}ICM_20948_ACCEL_CONFIG_BITMASKS;
+
 typedef struct{
 	uint8_t DEC3_CFG                   : 2;
 	uint8_t AZ_ST_EN                   : 1;
