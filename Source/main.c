@@ -28,9 +28,10 @@ int main(int argc, char *argv[]) {
     }
     
     __u8 reg = WHO_AM_I; /* Device register to access */
-  __s32 res;
+  //__s32 res;
+  ICM_20948_WHO_AM_I_t res;
   char buf[10];
-
+  printf("Size of ICM_20948_WHO_AM_I_t: %d",sizeof(ICM_20948_WHO_AM_I_t));
   /* Using SMBus commands */
   res = i2c_smbus_read_word_data(file, reg);
   if (res < 0) {

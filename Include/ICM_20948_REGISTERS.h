@@ -221,7 +221,7 @@ typedef enum{
 	TEMP_DIS_BIT_INDEX           = 3,
 	LP_EN_BIT_INDEX              = 5,
 	SLEEP_BIT_INDEX              = 6,
-	DEVICE_RESET_BIT_INDEX       = 7
+	DEVICE_RESET_BIT_INDEX       = 7,
 	
 	CLKSEL_BIT_MASK              = 0x07,
 	TEMP_DIS_BIT_MASK            = 0x01,
