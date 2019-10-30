@@ -8,6 +8,7 @@ int main(int argc, char *argv[]) {
 
 	Icm20948Device dev(1,0x68);
 	Icm20948ErrorCodes success;
+	std::vector<int16_t> accel;
 	success = dev.openDevice();
 	if (SUCCESS != success) {
 		std::cout << "Error! Failed to open device: " << success << std::endl;
@@ -31,7 +32,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	std::vector<int16_t> accel;
 	success = dev.getRawAcceleration(accel);
 	if (SUCCESS != success) {
 		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
@@ -44,7 +44,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	std::vector<int16_t> accel;
 	success = dev.getRawAcceleration(accel);
 	if (SUCCESS != success) {
 		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
@@ -58,7 +57,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	std::vector<int16_t> accel;
 	success = dev.getRawAcceleration(accel);
 	if (SUCCESS != success) {
 		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
@@ -71,7 +69,6 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	std::vector<int16_t> accel;
 	success = dev.getRawAcceleration(accel);
 	if (SUCCESS != success) {
 		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
@@ -79,8 +76,6 @@ int main(int argc, char *argv[]) {
 	else {
 		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
-
-
 		
     return 0;
 }
