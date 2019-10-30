@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Scaled Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 
 	std::cout << "Set Scale to 4G" << std::endl;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Scaled Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 
 	std::cout << "Set Scale to 8G" << std::endl;
@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Scaled Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 
 	std::cout << "Set Scale to 16G" << std::endl;
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Scaled Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 
 	std::cout << "Set Scale to 2G" << std::endl;
@@ -146,7 +146,7 @@ int main(int argc, char *argv[]) {
 	}
 	else {
 		std::cout.flags(f);
-		std::cout << "Raw Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+		std::cout << "Scaled Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
 	}
 		
     return 0;

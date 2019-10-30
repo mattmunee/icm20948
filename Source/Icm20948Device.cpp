@@ -234,7 +234,7 @@ Icm20948ErrorCodes Icm20948Device::writeRegister(
 Icm20948ErrorCodes Icm20948Device::selectUserBank(unsigned short user_bank)
 {
 	if (user_bank == user_bank_) {
-		debugStream_ << "User bank unchange." << std::endl;
+		debugStream_ << "User bank unchange: " << user_bank_ << std::endl;
 		return SUCCESS;
 	}
 
@@ -275,10 +275,10 @@ Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
 		return DEVICE_NOT_OPEN;
 	}
 
-	uint8_t data;
+	__s32 data = -1;
 	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_CONFIG, data);
 
-	if (!success) {
+	if (SUCCESS != success) {
 		debugStream_ << "Failed to read Accel FS register." << std::endl;
 		return success;
 	}
@@ -305,10 +305,10 @@ Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
 		return INVALID_ACCEL_RANGE;
 	}
 
-	uint8_t data;
+	__s32 data = -1;
 	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_CONFIG, data);
 
-	if (!success) {
+	if (SUCCESS != success) {
 		debugStream_ << "Failed to read Accel FS register." << std::endl;
 		return success;
 	}
@@ -317,7 +317,7 @@ Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
 	data = (data & ~(ACCEL_FS_SEL_BIT_MASK << ACCEL_FS_SEL_BIT_INDEX)) | thisdata;
 
 	success = writeRegister(0, REG_ACCEL_CONFIG, data);
-	if (!success) {
+	if (SUCCESS != success) {
 		debugStream_ << "Failed to write Accel FS register." << std::endl;
 		return success;
 	}

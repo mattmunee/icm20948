@@ -47,7 +47,7 @@ private:
 	long device_address_;
 	int device_file_;
 	bool is_open_ = false;
-	unsigned short user_bank_ = 0;
+	unsigned short user_bank_ = 9;
 	AccelScale accel_fs_sel_ = ACCEL_FS_NOT_SET;
 
 	Icm20948ErrorCodes readRegister(
