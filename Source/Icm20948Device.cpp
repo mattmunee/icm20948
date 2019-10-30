@@ -264,11 +264,6 @@ Icm20948ErrorCodes Icm20948Device::selectUserBank(unsigned short user_bank)
 
 Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
 {
-	if (accel_fs_sel_ != ACCEL_FS_NOT_SET) {
-		debugStream_ << "Accel FS already set. Returning memorized value." << std::endl;
-		accel_fs_sel = accel_fs_sel_;
-		return SUCCESS;
-	}
 
 	if (!is_open_) {
 		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
@@ -290,10 +285,6 @@ Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
 
 Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
 {
-	if (accel_fs_sel == accel_fs_sel_) {
-		debugStream_ << "Accel FS unchanged." << std::endl;
-		return SUCCESS;
-	}
 
 	if (!is_open_) {
 		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
@@ -321,8 +312,6 @@ Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
 		debugStream_ << "Failed to write Accel FS register." << std::endl;
 		return success;
 	}
-
-	accel_fs_sel_ = accel_fs_sel;
 
 	return SUCCESS;
 }

@@ -22,7 +22,6 @@ typedef enum {
 	ACCEL_FS_4G = 1,
 	ACCEL_FS_8G = 2,
 	ACCEL_FS_16G = 3,
-	ACCEL_FS_NOT_SET = 9
 }AccelScale;
 
 class Icm20948Device {
@@ -48,7 +47,6 @@ private:
 	int device_file_;
 	bool is_open_ = false;
 	unsigned short user_bank_ = 9;
-	AccelScale accel_fs_sel_ = ACCEL_FS_NOT_SET;
 
 	Icm20948ErrorCodes readRegister(
 		unsigned short user_bank, 
