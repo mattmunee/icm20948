@@ -10,7 +10,8 @@ typedef enum {
 	SUCCESS,
 	FAILED_TO_OPEN_ADAPTER,
 	FAILED_TO_TALK_TO_SLAVE,
-	FAILED_TO_READ_WORD_DATA
+	FAILED_TO_READ_WORD_DATA,
+	DEVICE_NOT_OPEN
 }Icm20948ErrorCodes;
 
 class Icm20948Device {
@@ -30,6 +31,7 @@ private:
 	unsigned short adapter_number_;
 	long device_address_;
 	int device_file_;
+	bool is_open_ = false;
 
 	Icm20948ErrorCodes readRegister(
 		unsigned short user_bank, 
