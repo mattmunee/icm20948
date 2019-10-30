@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "ICM_20948_REGISTERS.h"
 
 /* main.c */
 int main(int argc, char *argv[]) {
@@ -26,7 +27,7 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
     
-    __u8 reg = 0x00; /* Device register to access */
+    __u8 reg = WHO_AM_I; /* Device register to access */
   __s32 res;
   char buf[10];
 
