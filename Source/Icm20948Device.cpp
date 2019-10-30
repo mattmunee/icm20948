@@ -110,7 +110,7 @@ Icm20948ErrorCodes Icm20948Device::writeRegister(
 		return FAILED_TO_READ_WORD_DATA;
 	}
 	else {
-		debugStream_ << "Successfully wrote data from register "
+		debugStream_ << "Successfully wrote data to register." << std::endl;
 	}
 
 	return SUCCESS;
@@ -141,7 +141,7 @@ Icm20948ErrorCodes Icm20948Device::selectUserBank(unsigned short user_bank)
 		return FAILED_TO_READ_WORD_DATA;
 	}
 	else {
-		debugStream_ << "Successfully wrote data from register "
+		debugStream_ << "Successfully wrote data to register." << std::endl;
 	}
 
 	return SUCCESS;
