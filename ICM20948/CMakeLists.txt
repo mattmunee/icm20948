@@ -15,6 +15,7 @@ file(GLOB_RECURSE ICM20948_SRC
 )
 
 file(GLOB_RECURSE ICM20948_INC
+	"../Include/*.hpp"
 	"../Include/*.h"
 )
 
