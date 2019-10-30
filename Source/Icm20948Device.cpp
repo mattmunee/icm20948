@@ -1,9 +1,13 @@
+#include <string>
+#include <sstream>
 #include "../Include/Icm20948Device.hpp"
 
 Icm20948Device::Icm20948Device(
 	unsigned short adapter_number,
-	long device_address) 
-	:adapter_number_(adapter_number),
+	long device_address,
+	std::ostream& stream) 
+	:debugStream_(stream),
+	adapter_number_(adapter_number),
 	device_address_(device_address)
 {
 
@@ -32,18 +36,22 @@ Icm20948ErrorCodes Icm20948Device::whoAmI(ICM_20948_WHO_AM_I_t& out_t)
 
 Icm20948ErrorCodes Icm20948Device::openDevice()
 {
-	char filename[20];
-
-	snprintf(filename, 19, "/dev/i2c-%d", adapter_number_);
-	if ((device_file_ = open(filename, O_RDWR)) < 0) {
-		printf("Failed to open the bus.");
-		/* ERROR HANDLING; you can check errno to see what went wrong */
+	std::stringstream ss;
+	ss << "/dev/i2c-" << adapter_number_;
+	std::string filename = ss.str();
+	if ((device_file_ = open(filename.c_str(), O_RDWR)) < 0) {
+		debugStream_ << "Failed to open adapter!" << std::endl;
 		return FAILED_TO_OPEN_ADAPTER;
 	}
+	else {
+		debugStream_ << "Successfully opened adapter. File: " << device_file_ << std::endl;
+	}
 	if (ioctl(device_file_, I2C_SLAVE, device_address_) < 0) {
-		printf("Failed to acquire bus access and/or talk to slave.\n");
-		/* ERROR HANDLING; you can check errno to see what went wrong */
+		debugStream_ << "Failed to acquire bus access and/or talk to slave!" << std::endl;
 		return FAILED_TO_TALK_TO_SLAVE;
+	}
+	else {
+		debugStream_ << "Successfully acquired bus access." << std::endl;
 	}
 
 	return SUCCESS;
@@ -56,13 +64,20 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 {
 	Icm20948ErrorCodes success = openDevice();
 	if (SUCCESS != success) {
+		debugStream_ << "Failed to open device!" << std::endl;
 		return success;
 	}
 
 	/* Using SMBus commands */
-	data = i2c_smbus_read_word_data(device_file_, register_name);
-	if (data < 0) {
+	__s32 ret;
+	ret = i2c_smbus_read_word_data(device_file_, register_name);
+	if (ret < 0) {
+		debugStream_ << "Failed to read word data!" << std::endl;
 		return FAILED_TO_READ_WORD_DATA;
+	}
+	else {
+		debugStream_ << "Successfully read word data: Data = "<< data << std::endl;
+		data = ret;
 	}
 
 	return SUCCESS;

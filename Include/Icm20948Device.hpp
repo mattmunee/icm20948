@@ -3,6 +3,7 @@
 
 #include "ICM_20948_REGISTERS.h"
 #include <string>
+#include <iostream>
 
 typedef enum {
 	SUCCESS,
@@ -17,12 +18,14 @@ public:
 
 	Icm20948Device(
 		unsigned short adapter_number,
-		long device_address);
+		long device_address,
+		std::ostream& stream = std::cout);
 	static double Entropy(int pos, int neg);
 
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);
 
 private:
+	std::ostream& debugStream_;
 	unsigned short adapter_number_;
 	long device_address_;
 	int device_file_;
