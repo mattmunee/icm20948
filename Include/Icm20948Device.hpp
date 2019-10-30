@@ -33,6 +33,7 @@ private:
 	long device_address_;
 	int device_file_;
 	bool is_open_ = false;
+	unsigned short user_bank_ = 0;
 
 	Icm20948ErrorCodes readRegister(
 		unsigned short user_bank, 
