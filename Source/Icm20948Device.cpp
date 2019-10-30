@@ -279,6 +279,7 @@ Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
 	}
 
 	accel_fs_sel = (AccelScale)((data >> ACCEL_FS_SEL_BIT_INDEX) & ACCEL_FS_SEL_BIT_MASK);
+	debugStream_ << "Accel FS set to " << unsigned(accel_fs_sel) << std::endl;
 
 	return SUCCESS;
 }
