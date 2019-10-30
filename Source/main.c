@@ -1,5 +1,4 @@
 #include <linux/i2c-dev.h>
-#include <i2c/smbus.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -9,7 +8,7 @@ int main(int argc, char *argv[]) {
     printf("Hello\n");
 
     int file;
-    int adapter_nr = 0; /* probably dynamically determined */
+    int adapter_nr = 1; /* probably dynamically determined */
     char filename[20];
 
     snprintf(filename, 19, "/dev/i2c-%d", adapter_nr);
