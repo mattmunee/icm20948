@@ -169,6 +169,10 @@ Icm20948ErrorCodes Icm20948Device::writeRegister(
 		return success;
 	}
 
+	debugStream_ << "Writing data to register "
+		<< "0x" << std::hex << std::setw(2) << std::setfill('0') << register_name
+		<< ": Data = " << "0x" << std::hex << std::setw(2) << std::setfill('0') << data << std::endl;
+
 	__s32 ret = i2c_smbus_write_byte_data(device_file_, register_name, data);
 	if (ret < 0) {
 		debugStream_ << "Failed to write data!" << std::endl;
