@@ -1,5 +1,6 @@
 #include <string>
 #include <sstream>
+#include <iomanip>
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
 #include "../Include/Icm20948Device.hpp"
@@ -17,9 +18,9 @@ Icm20948Device::Icm20948Device(
 
 Icm20948ErrorCodes Icm20948Device::whoAmI(ICM_20948_WHO_AM_I_t& out_t)
 {
-	__s32 res;
+	__s32 res=-1;
 	Icm20948ErrorCodes success = readRegister(0, REG_WHO_AM_I, res);
-	
+			
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to read register!" << std::endl;
 		return success;
@@ -27,7 +28,6 @@ Icm20948ErrorCodes Icm20948Device::whoAmI(ICM_20948_WHO_AM_I_t& out_t)
 	else {
 		out_t.WHO_AM_I = (uint8_t)((res >> WHO_AM_I_BIT_INDEX) & WHO_AM_I_BIT_MASK);
 	}
-	
 
 	return SUCCESS;
 }
@@ -68,15 +68,15 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 		return DEVICE_NOT_OPEN;
 	}
 
-	__s32 ret;
-	ret = i2c_smbus_read_word_data(device_file_, register_name);
-	if (ret < 0) {
+	data = i2c_smbus_read_byte_data(device_file_, register_name);
+	if (data < 0) {
 		debugStream_ << "Failed to read word data!" << std::endl;
 		return FAILED_TO_READ_WORD_DATA;
 	}
 	else {
-		debugStream_ << "Successfully read word data: Data = "<< data << std::endl;
-		data = ret;
+		debugStream_ << "Successfully read word data from register "
+		<< "0x" << std::hex << std::setw(2) << std::setfill('0') << register_name 
+		<< ": Data = "<< "0x" << std::hex << std::setw(2) << std::setfill('0') << data << std::endl;
 	}
 
 	return SUCCESS;

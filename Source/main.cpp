@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include "Icm20948Device.hpp"
 
 /* main.c */
@@ -21,7 +22,8 @@ int main(int argc, char *argv[]) {
 		std::cout << "Error! Return Value: " << success << std::endl;
 	}
 	else {
-		std::cout << "Result of Who Am I?: " << whoIsDev.WHO_AM_I << std::endl;
+		std::cout << "Result of Who Am I?: " 
+<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(whoIsDev.WHO_AM_I) << std::endl;
 	}
 	
 	
