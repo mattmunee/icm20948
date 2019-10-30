@@ -2,6 +2,7 @@
 #define ICM_20948_DEVICE_HPP
 
 #include "ICM_20948_REGISTERS.h"
+#include <linux/types.h>
 #include <string>
 #include <iostream>
 
