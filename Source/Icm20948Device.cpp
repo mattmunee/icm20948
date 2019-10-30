@@ -17,27 +17,25 @@ Icm20948Device::Icm20948Device(
 
 Icm20948ErrorCodes Icm20948Device::whoAmI(ICM_20948_WHO_AM_I_t& out_t)
 {
-	Icm20948ErrorCodes success = openDevice();
+	__s32 res;
+	Icm20948ErrorCodes success = readRegister(0, REG_WHO_AM_I, res);
+	
 	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
 		return success;
 	}
 	else {
-		__s32 res;
-
-		if (success = readRegister(0, REG_WHO_AM_I, res)){
-			/* ERROR HANDLING: i2c transaction failed */
-			out_t.WHO_AM_I = (uint8_t)((res >> WHO_AM_I_BIT_INDEX) & WHO_AM_I_BIT_MASK);
-		}
-		else {
-			return success;
-		}
+		out_t.WHO_AM_I = (uint8_t)((res >> WHO_AM_I_BIT_INDEX) & WHO_AM_I_BIT_MASK);
 	}
+	
 
 	return SUCCESS;
 }
 
 Icm20948ErrorCodes Icm20948Device::openDevice()
 {
+	is_open_ = false;
+
 	std::stringstream ss;
 	ss << "/dev/i2c-" << adapter_number_;
 	std::string filename = ss.str();
@@ -54,6 +52,7 @@ Icm20948ErrorCodes Icm20948Device::openDevice()
 	}
 	else {
 		debugStream_ << "Successfully acquired bus access." << std::endl;
+		is_open_ = true;
 	}
 
 	return SUCCESS;
@@ -64,13 +63,11 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 	ICM_20948_REGISTER_MAP register_name,
 	__s32& data) 
 {
-	Icm20948ErrorCodes success = openDevice();
-	if (SUCCESS != success) {
-		debugStream_ << "Failed to open device!" << std::endl;
-		return success;
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
 	}
 
-	/* Using SMBus commands */
 	__s32 ret;
 	ret = i2c_smbus_read_word_data(device_file_, register_name);
 	if (ret < 0) {
