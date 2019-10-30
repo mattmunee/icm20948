@@ -677,9 +677,23 @@ typedef struct{
 	uint8_t reserved_0                 : 6;
 }ICM_20948_ACCEL_INTEL_CTRL_t;
 
+typedef enum {
+	ACCEL_INTEL_MODE_INT_BIT_INDEX = 0,
+	USER_BANK_ACCEL_INTEL_EN_BIT_INDEX = 1,
+
+	ACCEL_INTEL_MODE_INT_BIT_MASK = 0x01,
+	USER_BANK_ACCEL_INTEL_EN_BIT_MASK = 0x01,
+}ICM_20948_ACCEL_INTEL_CTRL_BITMASKS;
+
 typedef struct{
 	uint8_t WOM_THRESHOLD;
 }ICM_20948_ACCEL_WOM_THR_t;
+
+typedef enum {
+	WOM_THRESHOLD_BIT_INDEX = 0,
+
+	WOM_THRESHOLD_BIT_MASK = 0xFF,
+}ICM_20948_ACCEL_WOM_THR_BITMASKS;
 
 typedef struct{
 	uint8_t ACCEL_FCHOICE              : 1;

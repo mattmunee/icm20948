@@ -5,6 +5,7 @@
 #include <linux/types.h>
 #include <string>
 #include <iostream>
+#include <vector>
 
 typedef enum {
 	SUCCESS,
@@ -26,6 +27,8 @@ public:
 	Icm20948ErrorCodes openDevice();
 
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);
+	Icm20948ErrorCodes sleep(bool sleepOrWake);
+	Icm20948ErrorCodes getRawAcceleration(std::vector<int16_t>& accel);
 
 private:
 	std::ostream& debugStream_;

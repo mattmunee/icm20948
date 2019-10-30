@@ -32,6 +32,71 @@ Icm20948ErrorCodes Icm20948Device::whoAmI(ICM_20948_WHO_AM_I_t& out_t)
 	return SUCCESS;
 }
 
+Icm20948ErrorCodes Icm20948Device::sleep(bool sleepOrWake)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_PWR_MGMT_1, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		data |= (((sleepOrWake ? 0x01 : 0x00) & SLEEP_BIT_MASK) << SLEEP_BIT_INDEX);
+		return writeRegister(0, REG_PWR_MGMT_1, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::getRawAcceleration(std::vector<int16_t>& accel)
+{
+	Icm20948ErrorCodes success;
+	__s32 dataH = -1, dataL = -1;
+	accel = { 0,0,0 };
+
+	success = readRegister(0, REG_ACCEL_XOUT_H, dataH);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	success = readRegister(0, REG_ACCEL_XOUT_L, dataL);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	
+	accel[0] = (dataH << 8) | (dataL);
+
+	success = readRegister(0, REG_ACCEL_YOUT_H, dataH);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	success = readRegister(0, REG_ACCEL_YOUT_L, dataL);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+
+	accel[1] = (dataH << 8) | (dataL);
+
+	success = readRegister(0, REG_ACCEL_ZOUT_H, dataH);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	success = readRegister(0, REG_ACCEL_ZOUT_L, dataL);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+
+	accel[3] = (dataH << 8) | (dataL);
+
+	return SUCCESS;
+}
+
 Icm20948ErrorCodes Icm20948Device::openDevice()
 {
 	is_open_ = false;
@@ -81,8 +146,8 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 	}
 	else {
 		debugStream_ << "Successfully read data from register "
-		<< "0x" << std::hex << std::setw(2) << std::setfill('0') << register_name 
-		<< ": Data = "<< "0x" << std::hex << std::setw(2) << std::setfill('0') << data << std::endl;
+			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << register_name 
+			<< ": Data = "<< "0x" << std::hex << std::setw(2) << std::setfill('0') << data << std::endl;
 	}
 
 	return SUCCESS;

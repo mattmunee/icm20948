@@ -19,12 +19,68 @@ int main(int argc, char *argv[]) {
 	ICM_20948_WHO_AM_I_t whoIsDev;
 	success = dev.whoAmI(whoIsDev);
 	if (SUCCESS != success) {
-		std::cout << "Error! Return Value: " << success << std::endl;
+		std::cout << "Failed to return Who I Am! Return Value: " << (unsigned)success << std::endl;
 	}
 	else {
 		std::cout << "Result of Who Am I?: " 
-<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(whoIsDev.WHO_AM_I) << std::endl;
+			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(whoIsDev.WHO_AM_I) << std::endl;
 	}
+
+	success = dev.sleep(true);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::vector<int16_t> accel;
+	success = dev.getRawAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+	success = dev.sleep(false);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::vector<int16_t> accel;
+	success = dev.getRawAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+
+	success = dev.sleep(true);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::vector<int16_t> accel;
+	success = dev.getRawAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+	success = dev.sleep(false);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::vector<int16_t> accel;
+	success = dev.getRawAcceleration(accel);
+	if (SUCCESS != success) {
+		std::cout << "Failed to Sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout << "Accel: " << accel[0] << ", " << accel[1] << ", " << accel[2] << std::endl;
+	}
+
+
 		
     return 0;
 }
