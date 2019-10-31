@@ -483,21 +483,21 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 	//	return success;
 	//}
 
-	debugStream_ << "disableGyro:" << std::endl;
+	/*debugStream_ << "disableGyro:" << std::endl;
 	success = disableGyro(true);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to disableGyro!" << std::endl;
 		return success;
-	}
+	}*/
 	
-	debugStream_ << "enableAccelDutyCycle:" << std::endl;
+	/*debugStream_ << "enableAccelDutyCycle:" << std::endl;
 	success = enableAccelDutyCycle(true);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to enableAccelDutyCycle!" << std::endl;
 		return success;
-	}
+	}*/
 
-	debugStream_ << "setAccelSampleRate:" << std::endl;
+	/*debugStream_ << "setAccelSampleRate:" << std::endl;
 	success = setAccelSampleRate(accel_sampleRate_hz);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to setAccelSampleRate!" << std::endl;
@@ -509,7 +509,7 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to enableLowPowerMode!" << std::endl;
 		return success;
-	}
+	}*/
 	
 	debugStream_ << "setWomThreshold:" << std::endl;
 	success = setWomThreshold(wom_threshold_mg);
@@ -524,6 +524,13 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		debugStream_ << "Failed to enableWomLogic!" << std::endl;
 		return success;
 	}
+
+	debugStream_ << "enableWomInterrupt:" << std::endl;
+	success = enableWomInterrupt(true);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to enableWomInterrupt!" << std::endl;
+		return success;
+	}
 	
 	debugStream_ << "clearInterrupts:" << std::endl;
 	success = clearInterrupts();
@@ -531,14 +538,7 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		debugStream_ << "Failed to clearInterrupts!" << std::endl;
 		return success;
 	}
-	
-	debugStream_ << "enableWomInterrupt:" << std::endl;
-	success = enableWomInterrupt(true);
-	if (SUCCESS != success) {
-		debugStream_ << "Failed to enableWomInterrupt!" << std::endl;
-		return success;
-	}
-
+		
 }
 
 Icm20948ErrorCodes Icm20948Device::readRegister(
