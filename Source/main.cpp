@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::cout << "Clear interrupts" << std::endl;
-	success = dev.clearInterrupts()
+	success = dev.clearInterrupts();
 	if (SUCCESS != success) {
 		std::cout << "Failed to clear interrupts! Return Value: " << (unsigned)success << std::endl;
 	}
