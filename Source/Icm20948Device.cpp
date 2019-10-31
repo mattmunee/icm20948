@@ -51,6 +51,25 @@ Icm20948ErrorCodes Icm20948Device::sleep(bool sleepOrWake)
 	return SUCCESS;
 }
 
+Icm20948ErrorCodes Icm20948Device::reset()
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_PWR_MGMT_1, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = ((0x01 & DEVICE_RESET_BIT_MASK) << DEVICE_RESET_BIT_INDEX);
+		data = (data & ~(DEVICE_RESET_BIT_MASK << DEVICE_RESET_BIT_INDEX)) | thisdata;
+
+		return writeRegister(0, REG_PWR_MGMT_1, data);
+	}
+
+	return SUCCESS;
+}
+
 Icm20948ErrorCodes Icm20948Device::getRawAcceleration(std::vector<int16_t>& accel)
 {
 	Icm20948ErrorCodes success;

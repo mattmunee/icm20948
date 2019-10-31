@@ -65,6 +65,22 @@ int main(int argc, char *argv[]) {
 		std::cout << "WOM Threshold: " << womThreshold << std::endl;
 	}
 
+	std::cout << "Reset" << std::endl;
+	success = dev.reset();
+	if (SUCCESS != success) {
+		std::cout << "Failed to Reset! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::cout << "Getting WOM Threshold " << std::endl;
+	success = dev.getWomThreshold(womThreshold);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get WOM Threshold! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "WOM Threshold: " << womThreshold << std::endl;
+	}
+
 	
 		
     return 0;
