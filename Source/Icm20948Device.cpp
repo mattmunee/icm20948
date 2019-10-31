@@ -68,6 +68,9 @@ Icm20948ErrorCodes Icm20948Device::reset()
 		return writeRegister(0, REG_PWR_MGMT_1, data);
 	}
 
+	debugStream_ << "Sleeping for 100ms after reset." << std::endl;
+	usleep(100000);
+
 	return SUCCESS;
 }
 

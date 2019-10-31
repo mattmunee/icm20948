@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Reset! Return Value: " << (unsigned)success << std::endl;
 	}
 
+	std::cout << "Who am I?" << std::endl;
 	ICM_20948_WHO_AM_I_t whoIsDev;
 	success = dev.whoAmI(whoIsDev);
 	if (SUCCESS != success) {
