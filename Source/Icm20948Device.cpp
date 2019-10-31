@@ -459,6 +459,11 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 {
 	Icm20948ErrorCodes success;
 
+	debugStream_ << "Latch interrupt:" << std::endl;
+	__u8 data = 0;
+	data = (0x01 & INT1_LATCH_EN_BIT_MASK) << INT1_LATCH_EN_BIT_INDEX;
+	writeRegister(0, REG_INT_PIN_CFG, data);
+
 	debugStream_ << "disableTempSensor:" << std::endl;
 	success = disableTempSensor(true);
 	if (SUCCESS != success) {
