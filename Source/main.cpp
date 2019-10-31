@@ -13,6 +13,7 @@ int main(int argc, char *argv[]) {
 	std::vector<int16_t> rawaccel = {0,0,0};
 	std::vector<float> accel = { 0.0,0.0,0.0 };
 	unsigned int womThreshold = 0;
+	unsigned int accelRate = 0;
 
 	success = dev.openDevice();
 	if (SUCCESS != success) {
@@ -90,11 +91,33 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to clear interrupts! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	std::cout << "Sleep" << std::endl;
-	//success = dev.sleep(true);
+	std::cout << "Get Accel Rate:" << std::endl;
+	success = dev.getAccelSampleRate(accelRate);
 	if (SUCCESS != success) {
-		std::cout << "Failed to sleep! Return Value: " << (unsigned)success << std::endl;
+		std::cout << "Failed to get accel rate! Return Value: " << (unsigned)success << std::endl;
 	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Accel Sample Rate: " << accelRate << std::endl;
+	}
+
+	accelRate = 100;
+	std::cout << "Set Accel Rate:" << std::endl;
+	success = dev.setAccelSampleRate(accelRate);
+	if (SUCCESS != success) {
+		std::cout << "Failed to set accel rate! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::cout << "Get Accel Rate:" << std::endl;
+	success = dev.getAccelSampleRate(accelRate);
+	if (SUCCESS != success) {
+		std::cout << "Failed to get accel rate! Return Value: " << (unsigned)success << std::endl;
+	}
+	else {
+		std::cout.flags(f);
+		std::cout << "Accel Sample Rate: " << accelRate << std::endl;
+	}
+
 
 	std::cout << "Entering wait for interrupt loop " << std::endl;
 	ICM_20948_INT_STATUS_t out_t;

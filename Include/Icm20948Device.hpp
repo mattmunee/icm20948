@@ -15,6 +15,7 @@ typedef enum {
 	DEVICE_NOT_OPEN,
 	INVALID_USER_BANK,
 	INVALID_ACCEL_RANGE,
+	INVALID_ACCEL_RATE,
 	INVALID_WOM_THRESHOLD
 }Icm20948ErrorCodes;
 
@@ -29,6 +30,14 @@ public:
 
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);
 	Icm20948ErrorCodes sleep(bool sleepOrWake);
+	Icm20948ErrorCodes enableLowPowerMode(bool enable);
+	Icm20948ErrorCodes disableTempSensor(bool disable);
+	Icm20948ErrorCodes disableAccel(bool disable);
+	Icm20948ErrorCodes disableGyro(bool disable);
+	Icm20948ErrorCodes enableAccelDutyCycle(bool enable);
+	Icm20948ErrorCodes enableGyroDutyCycle(bool enable);
+	Icm20948ErrorCodes setAccelSampleRate(unsigned int sample_rate_hz);
+	Icm20948ErrorCodes getAccelSampleRate(unsigned int& sample_rate_hz);
 	Icm20948ErrorCodes reset();
 	Icm20948ErrorCodes clearInterrupts();
 	Icm20948ErrorCodes enableWomInterrupt(bool enable);

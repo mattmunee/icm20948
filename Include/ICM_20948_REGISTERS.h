@@ -251,10 +251,10 @@ typedef struct{
 
 typedef enum{
 	DISABLE_GYRO_BIT_INDEX       = 0,
-	DIABLE_ACCEL_BIT_INDEX       = 3,
+	DISABLE_ACCEL_BIT_INDEX       = 3,
 
 	DISABLE_GYRO_BIT_MASK        = 0x07,
-	DIABLE_ACCEL_BIT_MASK        = 0x07
+	DISABLE_ACCEL_BIT_MASK        = 0x07
 	
 }ICM_20948_PWR_MGMT_2_BITMASKS;
 
@@ -630,6 +630,12 @@ typedef struct{
 	uint8_t GYRO_SMPLRT_DIV;
 }ICM_20948_GYRO_SMPLRT_DIV_t;
 
+typedef enum {
+	GYRO_SMPLRT_DIV_BIT_INDEX = 0,
+
+	GYRO_SMPLRT_DIV_BIT_MASK = 0xFF
+}ICM_20948_GYRO_SMPLRT_DIV_BITMASKS;
+
 typedef struct{
 	uint8_t GYRO_FCHOICE               : 1;
 	uint8_t GYRO_FS_SEL                : 2;
@@ -679,9 +685,21 @@ typedef struct{
 	uint8_t reserved_0                 : 4;
 }ICM_20948_ACCEL_SMPLRT_DIV_1_t;
 
+typedef enum {
+	ACCEL_SMPLRT_DIV_11_8_BIT_INDEX = 0,
+
+	ACCEL_SMPLRT_DIV_11_8_BIT_MASK = 0x0F
+}ICM_20948_ACCEL_SMPLRT_DIV_1_BITMASKS;
+
 typedef struct{
 	uint8_t ACCEL_SMPLRT_DIV_7_0;
 }ICM_20948_ACCEL_SMPLRT_DIV_2_t;
+
+typedef enum {
+	ACCEL_SMPLRT_DIV_7_0_BIT_INDEX = 0,
+
+	ACCEL_SMPLRT_DIV_7_0_BIT_MASK = 0xFF
+}ICM_20948_ACCEL_SMPLRT_DIV_2_BITMASKS;
 
 typedef struct{
 	uint8_t ACCEL_INTEL_MODE_INT	: 1;

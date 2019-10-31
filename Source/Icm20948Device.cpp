@@ -53,6 +53,189 @@ Icm20948ErrorCodes Icm20948Device::sleep(bool sleepOrWake)
 	return SUCCESS;
 }
 
+Icm20948ErrorCodes Icm20948Device::enableLowPowerMode(bool enable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_PWR_MGMT_1, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((enable ? 0x01 : 0x00) & LP_EN_BIT_MASK) << LP_EN_BIT_INDEX);
+		data = (data & ~(LP_EN_BIT_MASK << LP_EN_BIT_INDEX)) | thisdata;
+
+		return writeRegister(0, REG_PWR_MGMT_1, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::disableTempSensor(bool disable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_PWR_MGMT_1, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((disable ? 0x01 : 0x00) & TEMP_DIS_BIT_MASK) << TEMP_DIS_BIT_INDEX);
+		data = (data & ~(TEMP_DIS_BIT_MASK << TEMP_DIS_BIT_INDEX)) | thisdata;
+
+		return writeRegister(0, REG_PWR_MGMT_1, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::disableAccel(bool disable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_PWR_MGMT_2, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((disable ? 0x01 : 0x00) & DISABLE_ACCEL_BIT_MASK) << DISABLE_ACCEL_BIT_INDEX);
+		data = (data & ~(DISABLE_ACCEL_BIT_MASK << DISABLE_ACCEL_BIT_INDEX)) | thisdata;
+
+		return writeRegister(0, REG_PWR_MGMT_2, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::disableGyro(bool disable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_PWR_MGMT_2, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((disable ? 0x01 : 0x00) & DISABLE_GYRO_BIT_MASK) << DISABLE_GYRO_BIT_INDEX);
+		data = (data & ~(DISABLE_GYRO_BIT_MASK << DISABLE_GYRO_BIT_INDEX)) | thisdata;
+
+		return writeRegister(0, REG_PWR_MGMT_2, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::enableAccelDutyCycle(bool enable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_LP_CONFIG, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((enable ? 0x01 : 0x00) & ACCEL_CYCLE_BIT_MASK) << ACCEL_CYCLE_BIT_MASK);
+		data = (data & ~(ACCEL_CYCLE_BIT_MASK << ACCEL_CYCLE_BIT_MASK)) | thisdata;
+
+		return writeRegister(0, REG_LP_CONFIG, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::enableGyroDutyCycle(bool enable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_LP_CONFIG, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((enable ? 0x01 : 0x00) & GYRO_CYCLE_BIT_MASK) << GYRO_CYCLE_BIT_MASK);
+		data = (data & ~(GYRO_CYCLE_BIT_MASK << GYRO_CYCLE_BIT_MASK)) | thisdata;
+
+		return writeRegister(0, REG_LP_CONFIG, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::setAccelSampleRate(unsigned int sample_rate_hz)
+{
+
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
+	}
+
+	if (!(sample_rate_hz >= 0 && threshold_mg <= 1125)) {
+		debugStream_ << "Invalid WOM Threshold.  Must be 0-1125Hz." << std::endl;
+		return INVALID_ACCEL_RANGE;
+	}
+
+	uint16_t div = (uint16_t)((1125.0f / (float)sample_rate_hz) - 1.0f);
+	div = div > 4095 ? 4095 : div;
+
+	__u8 divH = (__u8)((div >> (ACCEL_SMPLRT_DIV_11_8_BIT_INDEX + 8)) & ACCEL_SMPLRT_DIV_11_8_BIT_MASK);
+	__u8 divL = (__u8)((div >> (ACCEL_SMPLRT_DIV_7_0_BIT_INDEX)) & ACCEL_SMPLRT_DIV_7_0_BIT_MASK);
+
+	Icm20948ErrorCodes success = writeRegister(2, REG_ACCEL_SMPLRT_DIV_1, divH);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to write ACCEL_SMPLRT_DIV_1 register." << std::endl;
+		return success;
+	}
+
+	success = writeRegister(2, REG_ACCEL_SMPLRT_DIV_2, divL);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to write ACCEL_SMPLRT_DIV_1 register." << std::endl;
+		return success;
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::getAccelSampleRate(unsigned int& sample_rate_hz)
+{
+
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
+	}
+
+	if (!(sample_rate_hz >= 0 && threshold_mg <= 1125)) {
+		debugStream_ << "Invalid WOM Threshold.  Must be 0-1125Hz." << std::endl;
+		return INVALID_ACCEL_RANGE;
+	}
+
+	__u8 divH = 0, divL = 0;
+
+	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_SMPLRT_DIV_1, divH);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to write ACCEL_SMPLRT_DIV_1 register." << std::endl;
+		return success;
+	}
+
+	success = readRegister(2, REG_ACCEL_SMPLRT_DIV_2, divL);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to write ACCEL_SMPLRT_DIV_1 register." << std::endl;
+		return success;
+	}
+
+	uint16_t divH16 = ((uint16_t)(divH & ACCEL_SMPLRT_DIV_11_8_BIT_MASK)) << (ACCEL_SMPLRT_DIV_11_8_BIT_INDEX + 8);
+	uint16_t divL16 = ((uint16_t)(divL & ACCEL_SMPLRT_DIV_7_0_BIT_MASK)) << (ACCEL_SMPLRT_DIV_7_0_BIT_INDEX);
+	uint16_t div = divH16 | divL16;
+	sample_rate_hz = 1125.0f / (1.0 + div);
+
+	return SUCCESS;
+}
+
 Icm20948ErrorCodes Icm20948Device::reset()
 {
 	__s32 data = -1;
@@ -456,7 +639,7 @@ Icm20948ErrorCodes Icm20948Device::setWomThreshold(unsigned int threshold_mg)
 		return INVALID_ACCEL_RANGE;
 	}
 
-	Icm20948ErrorCodes success = writeRegister(2, REG_ACCEL_WOM_THR, (__u8)(threshold_mg/4));
+	Icm20948ErrorCodes success = writeRegister(2, REG_ACCEL_WOM_THR, (__u8)(threshold_mg / 4));
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to write WOM Thresh register." << std::endl;
 		return success;
