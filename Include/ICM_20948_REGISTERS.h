@@ -148,6 +148,18 @@ typedef enum{
 
 }ICM_20948_REGISTER_MAP;
 
+typedef enum {
+	ACCEL_FS_2G = 0,
+	ACCEL_FS_4G = 1,
+	ACCEL_FS_8G = 2,
+	ACCEL_FS_16G = 3,
+}ICM_20948_ACCEL_SCALE;
+
+typedef enum {
+	STORE_INITIAL_REFERENCE_FOR_COMPARISON = 0,
+	RUNNING_COMPARISON_CURRENT_TO_PREVIOUS = 1
+}ICM_20948_WOM_ALGORITHM;
+
 // Type definitions for the registers
 typedef struct{
 	uint8_t WHO_AM_I;
@@ -672,8 +684,8 @@ typedef struct{
 }ICM_20948_ACCEL_SMPLRT_DIV_2_t;
 
 typedef struct{
-	uint8_t ACCEL_INTEL_MODE_INT       : 1;
-	uint8_t ACCEL_INTEL_EN             : 1;
+	uint8_t ACCEL_INTEL_MODE_INT	: 1;
+	ICM_20948_WOM_ALGORITHM ACCEL_INTEL_EN : 1;
 	uint8_t reserved_0                 : 6;
 }ICM_20948_ACCEL_INTEL_CTRL_t;
 

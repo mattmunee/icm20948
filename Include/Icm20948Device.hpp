@@ -18,13 +18,6 @@ typedef enum {
 	INVALID_WOM_THRESHOLD
 }Icm20948ErrorCodes;
 
-typedef enum {
-	ACCEL_FS_2G = 0,
-	ACCEL_FS_4G = 1,
-	ACCEL_FS_8G = 2,
-	ACCEL_FS_16G = 3,
-}AccelScale;
-
 class Icm20948Device {
 public:
 	
@@ -37,10 +30,13 @@ public:
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);
 	Icm20948ErrorCodes sleep(bool sleepOrWake);
 	Icm20948ErrorCodes reset();
+	Icm20948ErrorCodes enableWomInterrupt(bool enable);
+	Icm20948ErrorCodes enableWomLogic(bool enable, ICM_20948_WOM_ALGORITHM algorithm);
+	Icm20948ErrorCodes getInterruptStatus(ICM_20948_INT_STATUS_t& out_t);
 	Icm20948ErrorCodes getRawAcceleration(std::vector<int16_t>& accel);
 	Icm20948ErrorCodes getAcceleration(std::vector<float>& accel_g);
-	Icm20948ErrorCodes getAccelFS(AccelScale& accel_fs_sel);
-	Icm20948ErrorCodes setAccelFS(AccelScale accel_fs_sel);
+	Icm20948ErrorCodes getAccelFS(ICM_20948_ACCEL_SCALE& accel_fs_sel);
+	Icm20948ErrorCodes setAccelFS(ICM_20948_ACCEL_SCALE accel_fs_sel);
 	Icm20948ErrorCodes getWomThreshold(unsigned int& threshold_mg);
 	Icm20948ErrorCodes setWomThreshold(unsigned int threshold_mg);
 

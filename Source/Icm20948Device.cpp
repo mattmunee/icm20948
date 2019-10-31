@@ -70,6 +70,56 @@ Icm20948ErrorCodes Icm20948Device::reset()
 	return SUCCESS;
 }
 
+Icm20948ErrorCodes Icm20948Device::enableWomInterrupt(bool enable)
+{
+	__s32 data = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_INT_ENABLE, data);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		uint16_t thisdata = (((enable ? 0x01 : 0x00) & WOM_INT_EN_BIT_MASK) << WOM_INT_EN_BIT_INDEX);
+		data = (data & ~(WOM_INT_EN_BIT_MASK << WOM_INT_EN_BIT_INDEX)) | thisdata;
+
+		return writeRegister(0, REG_INT_ENABLE, data);
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::enableWomLogic(bool enable, ICM_20948_WOM_ALGORITHM algorithm)
+{
+
+	uint8_t data = ((algorithm & ACCEL_INTEL_MODE_INT_BIT_MASK) << ACCEL_INTEL_MODE_INT_BIT_INDEX)
+		| (((enable ? 0x01 : 0x00) & ACCEL_INTEL_EN_BIT_MASK) << ACCEL_INTEL_EN_BIT_INDEX);
+
+	return writeRegister(2, REG_ACCEL_INTEL_CTRL, data);
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::getInterruptStatus(ICM_20948_INT_STATUS_t& out_t)
+{
+	memset(&out_t, 0, sizeof(ICM_20948_INT_STATUS_t));
+	__s32 res = -1;
+	Icm20948ErrorCodes success = readRegister(0, REG_INT_STATUS, res);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+	else {
+		out_t.I2C_MST_INT = (uint8_t)((res >> I2C_MST_INT_BIT_INDEX) & I2C_MST_INT_BIT_MASK);
+		out_t.DMP_INT1 = (uint8_t)((res >> DMP_INT1_BIT_INDEX) & DMP_INT1_BIT_MASK);
+		out_t.PLL_RDY_INT = (uint8_t)((res >> PLL_RDY_INT_BIT_INDEX) & PLL_RDY_INT_BIT_MASK);
+		out_t.WOM_INT = (uint8_t)((res >> WOM_INT_BIT_INDEX) & WOM_INT_BIT_MASK);
+	}
+
+	return SUCCESS;
+}
+
 Icm20948ErrorCodes Icm20948Device::getRawAcceleration(std::vector<int16_t>& accel)
 {
 	Icm20948ErrorCodes success;
@@ -128,7 +178,7 @@ Icm20948ErrorCodes Icm20948Device::getAcceleration(std::vector<float>& accel_g)
 		return success;
 	}
 
-	AccelScale accel_fs;
+	ICM_20948_ACCEL_SCALE accel_fs;
 	success = getAccelFS(accel_fs);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to get Accel FS!" << std::endl;
@@ -278,7 +328,7 @@ Icm20948ErrorCodes Icm20948Device::selectUserBank(unsigned short user_bank)
 	return SUCCESS;
 }
 
-Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
+Icm20948ErrorCodes Icm20948Device::getAccelFS(ICM_20948_ACCEL_SCALE& accel_fs_sel)
 {
 
 	if (!is_open_) {
@@ -294,13 +344,13 @@ Icm20948ErrorCodes Icm20948Device::getAccelFS(AccelScale& accel_fs_sel)
 		return success;
 	}
 
-	accel_fs_sel = (AccelScale)((data >> ACCEL_FS_SEL_BIT_INDEX) & ACCEL_FS_SEL_BIT_MASK);
+	accel_fs_sel = (ICM_20948_ACCEL_SCALE)((data >> ACCEL_FS_SEL_BIT_INDEX) & ACCEL_FS_SEL_BIT_MASK);
 	debugStream_ << "Accel FS set to " << unsigned(accel_fs_sel) << std::endl;
 
 	return SUCCESS;
 }
 
-Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
+Icm20948ErrorCodes Icm20948Device::setAccelFS(ICM_20948_ACCEL_SCALE accel_fs_sel)
 {
 
 	if (!is_open_) {
