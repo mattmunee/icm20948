@@ -28,8 +28,8 @@ public:
 		std::ostream& stream = std::cout);
 	Icm20948ErrorCodes openDevice();
 	Icm20948ErrorCodes goToLowPowerWomMode(
-		unsigned int accelSampleRate_Hz,
-		unsigned int womthreshold_mg,
+		unsigned int accel_sampleRate_hz,
+		unsigned int wom_threshold_mg,
 		ICM_20948_WOM_ALGORITHM algorithm);
 
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);

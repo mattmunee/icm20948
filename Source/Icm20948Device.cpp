@@ -451,16 +451,16 @@ Icm20948ErrorCodes Icm20948Device::openDevice()
 }
 
 Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
-	unsigned int accelSampleRate_Hz,
-	unsigned int womthreshold_mg,
+	unsigned int accel_sampleRate_hz,
+	unsigned int wom_threshold_mg,
 	ICM_20948_WOM_ALGORITHM algorithm)
 {
 	Icm20948ErrorCodes success;
-	success = disableTempSensor(true);
-	if (SUCCESS != success) {
-		debugStream_ << "Failed to disableTempSensor!" << std::endl;
-		return success;
-	}
+	//success = disableTempSensor(true);
+	//if (SUCCESS != success) {
+	//	debugStream_ << "Failed to disableTempSensor!" << std::endl;
+	//	return success;
+	//}
 
 	success = disableGyro(true);
 	if (SUCCESS != success) {
@@ -474,7 +474,7 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		return success;
 	}
 
-	success = setAccelSampleRate(accelSampleRate_Hz);
+	success = setAccelSampleRate(accel_sampleRate_hz);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to setAccelSampleRate!" << std::endl;
 		return success;
@@ -486,7 +486,7 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		return success;
 	}
 	
-	success = setWomThreshold(womThreshold);
+	success = setWomThreshold(wom_threshold_mg);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to setWomThreshold!" << std::endl;
 		return success;
