@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 	}	
 
 	std::cout << "Enabling WOM Logic " << std::endl;
-	success = dev.enableWomLogic(true, ALGO_STORE_INITIAL_REFERENCE_FOR_COMPARISON);
+	success = dev.enableWomLogic(true, ALGO_RUNNING_COMPARISON_CURRENT_TO_PREVIOUS);
 	if (SUCCESS != success) {
 		std::cout << "Failed to enable WOM logic! Return Value: " << (unsigned)success << std::endl;
 	}
@@ -91,7 +91,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::cout << "Sleep" << std::endl;
-	success = dev.sleep(true);
+	//success = dev.sleep(true);
 	if (SUCCESS != success) {
 		std::cout << "Failed to sleep! Return Value: " << (unsigned)success << std::endl;
 	}
