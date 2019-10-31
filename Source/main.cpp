@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::cout << "Go to Low Power" << std::endl;
-	success = dev.sleep(false);
+	success = dev.goToLowPowerWomMode();
 	if (SUCCESS != success) {
 		std::cout << "Failed to go to Low Power! Return Value: " << (unsigned)success << std::endl;
 	}	
