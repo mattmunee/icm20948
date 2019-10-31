@@ -116,9 +116,6 @@ Icm20948ErrorCodes Icm20948Device::getInterruptStatus(ICM_20948_INT_STATUS_t& ou
 		return success;
 	}
 	else {
-		debugStream_ << "Interrupt status byte: " << unsigned(res);
-		uint8_t temp = (uint8_t)((res >> WOM_INT_BIT_INDEX) & WOM_INT_BIT_MASK);
-		debugStream_ << ", WOM_INT: " << unsigned(temp) << std::endl;
 		out_t.I2C_MST_INT = (uint8_t)((res >> I2C_MST_INT_BIT_INDEX) & I2C_MST_INT_BIT_MASK);
 		out_t.DMP_INT1 = (uint8_t)((res >> DMP_INT1_BIT_INDEX) & DMP_INT1_BIT_MASK);
 		out_t.PLL_RDY_INT = (uint8_t)((res >> PLL_RDY_INT_BIT_INDEX) & PLL_RDY_INT_BIT_MASK);
