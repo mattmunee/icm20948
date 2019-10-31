@@ -525,13 +525,6 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		return success;
 	}
 	
-	debugStream_ << "enableWomLogic:" << std::endl;
-	success = enableWomLogic(true, algorithm);
-	if (SUCCESS != success) {
-		debugStream_ << "Failed to enableWomLogic!" << std::endl;
-		return success;
-	}
-	
 	debugStream_ << "clearInterrupts:" << std::endl;
 	success = clearInterrupts();
 	if (SUCCESS != success) {
