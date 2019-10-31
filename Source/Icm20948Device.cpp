@@ -64,7 +64,17 @@ Icm20948ErrorCodes Icm20948Device::enableLowPowerMode(bool enable)
 	}
 	else {
 		uint16_t thisdata = (((enable ? 0x01 : 0x00) & LP_EN_BIT_MASK) << LP_EN_BIT_INDEX);
+		debugStream_ << "Original data: "
+			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
+
+		debugStream_ << "Data to write: "
+			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(thisdata) << std::endl;
+
 		data = (data & ~(LP_EN_BIT_MASK << LP_EN_BIT_INDEX)) | thisdata;
+
+		debugStream_ << "New data: "
+			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
+
 
 		return writeRegister(0, REG_PWR_MGMT_1, data);
 	}
