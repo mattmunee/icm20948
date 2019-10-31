@@ -480,12 +480,12 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		return success;
 	}
 
-	/*debugStream_ << "enableAccelDutyCycle:" << std::endl;
+	debugStream_ << "enableAccelDutyCycle:" << std::endl;
 	success = enableAccelDutyCycle(true);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to enableAccelDutyCycle!" << std::endl;
 		return success;
-	}*/
+	}
 
 	debugStream_ << "setWomThreshold:" << std::endl;
 	success = setWomThreshold(wom_threshold_mg);
