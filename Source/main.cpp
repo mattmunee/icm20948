@@ -34,10 +34,9 @@ int main(int argc, char *argv[]) {
 	if (SUCCESS != success) {
 		std::cout << "Failed to return Who I Am! Return Value: " << (unsigned)success << std::endl;
 	}
-	else {
-		std::cout << "Result of Who Am I?: " 
-			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(whoIsDev.WHO_AM_I) << std::endl;
-	}
+
+	std::cout << "Result of Who Am I?: " 
+		<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(whoIsDev.WHO_AM_I) << std::endl;
 
 	std::cout<<"Wake"<<std::endl;
 	success = dev.sleep(false);
@@ -85,6 +84,13 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to enable WOM interrupt! Return Value: " << (unsigned)success << std::endl;
 	}
 
+	std::cout << "Sleep" << std::endl;
+	success = dev.sleep(true);
+	if (SUCCESS != success) {
+		std::cout << "Failed to sleep! Return Value: " << (unsigned)success << std::endl;
+	}
+
+	std::cout << "Entering wait for interrupt loop " << std::endl;
 	ICM_20948_INT_STATUS_t out_t;
 	do {
 		sleep(1);
