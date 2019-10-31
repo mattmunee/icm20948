@@ -95,10 +95,10 @@ int main(int argc, char *argv[]) {
 	do {
 		sleep(1);
 		dev.getInterruptStatus(out_t);
-		std::cout << "Interrupt Status: I2C_MST_INT=" << out_t.I2C_MST_INT 
-			<< ", DMP_INT1=" << out_t.DMP_INT1 
-			<< ", PLL_RDY_INT=" << out_t.PLL_RDY_INT 
-			<< ", WOM_INT=" << out_t.WOM_INT << std::endl;
+		std::cout << "Interrupt Status: I2C_MST_INT=" << unsigned(out_t.I2C_MST_INT) 
+			<< ", DMP_INT1=" << unsigned(out_t.DMP_INT1) 
+			<< ", PLL_RDY_INT=" << unsigned(out_t.PLL_RDY_INT) 
+			<< ", WOM_INT=" << unsigned(out_t.WOM_INT) << std::endl;
 
 	} while (0 == out_t.WOM_INT);
 		
