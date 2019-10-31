@@ -84,6 +84,12 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to enable WOM interrupt! Return Value: " << (unsigned)success << std::endl;
 	}
 
+	std::cout << "Clear Interrupts:" << std::endl;
+	success = dev.clearInterrupts();
+	if (SUCCESS != success) {
+		std::cout << "Failed to clear interrupts! Return Value: " << (unsigned)success << std::endl;
+	}
+
 	std::cout << "Sleep" << std::endl;
 	success = dev.sleep(true);
 	if (SUCCESS != success) {

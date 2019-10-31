@@ -75,6 +75,38 @@ Icm20948ErrorCodes Icm20948Device::reset()
 	return SUCCESS;
 }
 
+Icm20948ErrorCodes Icm20948Device::clearInterrupts() {
+
+	__s32 data = -1;
+	Icm20948ErrorCodes success;
+
+	success = readRegister(0, REG_INT_STATUS, data);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register REG_INT_STATUS!" << std::endl;
+		return success;
+	}
+
+	success = readRegister(0, REG_INT_STATUS_1, data);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register REG_INT_STATUS_1!" << std::endl;
+		return success;
+	}
+
+	success = readRegister(0, REG_INT_STATUS_2, data);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register REG_INT_STATUS_2!" << std::endl;
+		return success;
+	}
+
+	success = readRegister(0, REG_INT_STATUS_3, data);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register REG_INT_STATUS_3!" << std::endl;
+		return success;
+	}
+
+	return SUCCESS;
+}
+
 Icm20948ErrorCodes Icm20948Device::enableWomInterrupt(bool enable)
 {
 	__s32 data = -1;
@@ -117,7 +149,7 @@ Icm20948ErrorCodes Icm20948Device::getInterruptStatus(ICM_20948_INT_STATUS_t& ou
 	}
 	else {
 		debugStream_ << "Interrupt status byte: " << unsigned(res);
-		uint8_t temp = (uint8_t)((res >> WOM_INT_BIT_INDEX) & WOM_INT_BIT_MASK);
+		__s32 temp = (__s32)((res >> WOM_INT_BIT_INDEX) & WOM_INT_BIT_MASK);
 		debugStream_ << ", WOM_INT: " << unsigned(temp) << std::endl;
 		out_t.I2C_MST_INT = (uint8_t)((res >> I2C_MST_INT_BIT_INDEX) & I2C_MST_INT_BIT_MASK);
 		out_t.DMP_INT1 = (uint8_t)((res >> DMP_INT1_BIT_INDEX) & DMP_INT1_BIT_MASK);
