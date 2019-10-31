@@ -175,7 +175,7 @@ Icm20948ErrorCodes Icm20948Device::setAccelSampleRate(unsigned int sample_rate_h
 		return DEVICE_NOT_OPEN;
 	}
 
-	if (!(sample_rate_hz >= 0 && threshold_mg <= 1125)) {
+	if (!(sample_rate_hz >= 0 && sample_rate_hz <= 1125)) {
 		debugStream_ << "Invalid WOM Threshold.  Must be 0-1125Hz." << std::endl;
 		return INVALID_ACCEL_RANGE;
 	}
@@ -209,12 +209,7 @@ Icm20948ErrorCodes Icm20948Device::getAccelSampleRate(unsigned int& sample_rate_
 		return DEVICE_NOT_OPEN;
 	}
 
-	if (!(sample_rate_hz >= 0 && threshold_mg <= 1125)) {
-		debugStream_ << "Invalid WOM Threshold.  Must be 0-1125Hz." << std::endl;
-		return INVALID_ACCEL_RANGE;
-	}
-
-	__u8 divH = 0, divL = 0;
+	__s32 divH = 0, divL = 0;
 
 	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_SMPLRT_DIV_1, divH);
 	if (SUCCESS != success) {
@@ -228,10 +223,10 @@ Icm20948ErrorCodes Icm20948Device::getAccelSampleRate(unsigned int& sample_rate_
 		return success;
 	}
 
-	uint16_t divH16 = ((uint16_t)(divH & ACCEL_SMPLRT_DIV_11_8_BIT_MASK)) << (ACCEL_SMPLRT_DIV_11_8_BIT_INDEX + 8);
-	uint16_t divL16 = ((uint16_t)(divL & ACCEL_SMPLRT_DIV_7_0_BIT_MASK)) << (ACCEL_SMPLRT_DIV_7_0_BIT_INDEX);
-	uint16_t div = divH16 | divL16;
-	sample_rate_hz = 1125.0f / (1.0 + div);
+	divH = (divH & ACCEL_SMPLRT_DIV_11_8_BIT_MASK) << (ACCEL_SMPLRT_DIV_11_8_BIT_INDEX + 8);
+	divL = (divL & ACCEL_SMPLRT_DIV_7_0_BIT_MASK) << (ACCEL_SMPLRT_DIV_7_0_BIT_INDEX);
+	
+	sample_rate_hz = 1125.0f / (1.0 + (divH | divL));
 
 	return SUCCESS;
 }
