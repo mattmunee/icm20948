@@ -133,9 +133,9 @@ Icm20948ErrorCodes Icm20948Device::getAcceleration(std::vector<float>& accel_g)
 		break;
 	}
 
-	accel[0] = sf * (float)raw_accel[0];
-	accel[1] = sf * (float)raw_accel[1];
-	accel[2] = sf * (float)raw_accel[2];
+	accel_g[0] = sf * (float)raw_accel[0];
+	accel_g[1] = sf * (float)raw_accel[1];
+	accel_g[2] = sf * (float)raw_accel[2];
 
 	return SUCCESS;
 }
@@ -253,7 +253,7 @@ Icm20948ErrorCodes Icm20948Device::selectUserBank(unsigned short user_bank)
 		return FAILED_TO_READ_WORD_DATA;
 	}
 	else {
-		debugStream_ << "Successfully wrote data to register." << std::endl;
+		debugStream_ << "Successfully wrote to REG_BANK_SEL." << std::endl;
 	}
 
 	return SUCCESS;

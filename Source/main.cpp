@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 	womThreshold = 333;
 	std::cout << "Setting WOM Threshold to " << womThreshold << std::endl;
 
-	success = dev.getWomThreshold(womThreshold);
+	success = dev.setWomThreshold(womThreshold);
 	if (SUCCESS != success) {
 		std::cout << "Failed to set WOM Threshold! Return Value: " << (unsigned)success << std::endl;
 	}
