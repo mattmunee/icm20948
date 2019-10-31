@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
 	do {
 		sleep(1);
 		dev.getInterruptStatus(out_t);
-	}while(!out_t.WOM_INT)
+	}while(!out_t.WOM_INT);
 		
     return 0;
 }
