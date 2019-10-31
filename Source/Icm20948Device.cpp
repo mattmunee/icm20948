@@ -150,7 +150,7 @@ Icm20948ErrorCodes Icm20948Device::enableAccelDutyCycle(bool enable)
 	}
 	else {
 		
-		uint16_t thisdata = (((enable ? 0x01 : 0x00) & ACCEL_CYCLE_BIT_MASK) << ACCEL_CYCLE_BIT_MASK);
+		uint16_t thisdata = (((enable ? 0x01 : 0x00) & ACCEL_CYCLE_BIT_MASK) << ACCEL_CYCLE_BIT_INDEX);
 
 		debugStream_ << "Original data: "
 			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
@@ -158,7 +158,7 @@ Icm20948ErrorCodes Icm20948Device::enableAccelDutyCycle(bool enable)
 		debugStream_ << "Data to write: "
 			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(thisdata) << std::endl;
 
-		data = (data & ~(ACCEL_CYCLE_BIT_MASK << ACCEL_CYCLE_BIT_MASK)) | thisdata;
+		data = (data & ~(ACCEL_CYCLE_BIT_MASK << ACCEL_CYCLE_BIT_INDEX)) | thisdata;
 
 		debugStream_ << "New data: "
 			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
@@ -179,8 +179,8 @@ Icm20948ErrorCodes Icm20948Device::enableGyroDutyCycle(bool enable)
 		return success;
 	}
 	else {
-		uint16_t thisdata = (((enable ? 0x01 : 0x00) & GYRO_CYCLE_BIT_MASK) << GYRO_CYCLE_BIT_MASK);
-		data = (data & ~(GYRO_CYCLE_BIT_MASK << GYRO_CYCLE_BIT_MASK)) | thisdata;
+		uint16_t thisdata = (((enable ? 0x01 : 0x00) & GYRO_CYCLE_BIT_MASK) << GYRO_CYCLE_BIT_INDEX);
+		data = (data & ~(GYRO_CYCLE_BIT_MASK << GYRO_CYCLE_BIT_INDEX)) | thisdata;
 
 		return writeRegister(0, REG_LP_CONFIG, data);
 	}
