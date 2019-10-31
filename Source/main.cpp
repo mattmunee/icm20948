@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
 	}
 
-	std::cout << "Getting WOM Threshold " << womThreshold << std::endl;
+	std::cout << "Getting WOM Threshold " << std::endl;
 	success = dev.getWomThreshold(womThreshold);
 	if (SUCCESS != success) {
 		std::cout << "Failed to get WOM Threshold! Return Value: " << (unsigned)success << std::endl;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to set WOM Threshold! Return Value: " << (unsigned)success << std::endl;
 	}
 	
-	std::cout << "Getting WOM Threshold " << womThreshold << std::endl;
+	std::cout << "Getting WOM Threshold " << std::endl;
 	success = dev.getWomThreshold(womThreshold);
 	if (SUCCESS != success) {
 		std::cout << "Failed to get WOM Threshold! Return Value: " << (unsigned)success << std::endl;
