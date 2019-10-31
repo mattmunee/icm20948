@@ -30,6 +30,7 @@ public:
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);
 	Icm20948ErrorCodes sleep(bool sleepOrWake);
 	Icm20948ErrorCodes reset();
+	Icm20948ErrorCodes clearInterrupts();
 	Icm20948ErrorCodes enableWomInterrupt(bool enable);
 	Icm20948ErrorCodes enableWomLogic(bool enable, ICM_20948_WOM_ALGORITHM algorithm);
 	Icm20948ErrorCodes getInterruptStatus(ICM_20948_INT_STATUS_t& out_t);
