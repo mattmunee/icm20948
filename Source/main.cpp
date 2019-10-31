@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::cout << "Go to Low Power" << std::endl;
-	success = dev.goToLowPowerWomMode();
+	success = dev.goToLowPowerWomMode(100,100,ALGO_STORE_INITIAL_REFERENCE_FOR_COMPARISON);
 	if (SUCCESS != success) {
 		std::cout << "Failed to go to Low Power! Return Value: " << (unsigned)success << std::endl;
 	}	
