@@ -4,6 +4,7 @@
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
 #include <string.h>
+#include <unistd.h>
 #include "../Include/Icm20948Device.hpp"
 
 Icm20948Device::Icm20948Device(
