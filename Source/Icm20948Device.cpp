@@ -471,21 +471,21 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		return success;
 	}*/
 	
-	/*debugStream_ << "enableAccelDutyCycle:" << std::endl;
-	success = enableAccelDutyCycle(true);
-	if (SUCCESS != success) {
-		debugStream_ << "Failed to enableAccelDutyCycle!" << std::endl;
-		return success;
-	}
-
 	debugStream_ << "setAccelSampleRate:" << std::endl;
 	success = setAccelSampleRate(accel_sampleRate_hz);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to setAccelSampleRate!" << std::endl;
 		return success;
 	}
+
+	debugStream_ << "enableAccelDutyCycle:" << std::endl;
+	success = enableAccelDutyCycle(true);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to enableAccelDutyCycle!" << std::endl;
+		return success;
+	}
 	
-	debugStream_ << "enableLowPowerMode:" << std::endl;
+	/*debugStream_ << "enableLowPowerMode:" << std::endl;
 	success = enableLowPowerMode(true);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to enableLowPowerMode!" << std::endl;
