@@ -55,6 +55,12 @@ int main(int argc, char *argv[]) {
 		std::cout << "Failed to Wake! Return Value: " << (unsigned)success << std::endl;
 	}
 
+	std::cout << "Clear interrupts" << std::endl;
+	success = dev.clearInterrupts()
+	if (SUCCESS != success) {
+		std::cout << "Failed to clear interrupts! Return Value: " << (unsigned)success << std::endl;
+	}
+
 	std::cout << "Entering wait for interrupt loop " << std::endl;
 	ICM_20948_INT_STATUS_t out_t;
 	do {
