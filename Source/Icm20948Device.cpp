@@ -458,18 +458,18 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 	ICM_20948_WOM_ALGORITHM algorithm)
 {
 	Icm20948ErrorCodes success;
-	//success = disableTempSensor(true);
-	//if (SUCCESS != success) {
-	//	debugStream_ << "Failed to disableTempSensor!" << std::endl;
-	//	return success;
-	//}
+	success = disableTempSensor(true);
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to disableTempSensor!" << std::endl;
+		return success;
+	}
 
-	/*debugStream_ << "disableGyro:" << std::endl;
+	debugStream_ << "disableGyro:" << std::endl;
 	success = disableGyro(true);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to disableGyro!" << std::endl;
 		return success;
-	}*/
+	}
 	
 	debugStream_ << "setAccelSampleRate:" << std::endl;
 	success = setAccelSampleRate(accel_sampleRate_hz);
@@ -478,12 +478,12 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		return success;
 	}
 
-	debugStream_ << "enableAccelDutyCycle:" << std::endl;
+	/*debugStream_ << "enableAccelDutyCycle:" << std::endl;
 	success = enableAccelDutyCycle(true);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to enableAccelDutyCycle!" << std::endl;
 		return success;
-	}
+	}*/
 	
 	/*debugStream_ << "enableLowPowerMode:" << std::endl;
 	success = enableLowPowerMode(true);
