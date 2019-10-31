@@ -101,7 +101,7 @@ Icm20948ErrorCodes Icm20948Device::disableAccel(bool disable)
 		return success;
 	}
 	else {
-		uint16_t thisdata = (((disable ? 0x01 : 0x00) & DISABLE_ACCEL_BIT_MASK) << DISABLE_ACCEL_BIT_INDEX);
+		uint16_t thisdata = (((disable ? 0xFF : 0x00) & DISABLE_ACCEL_BIT_MASK) << DISABLE_ACCEL_BIT_INDEX);
 		data = (data & ~(DISABLE_ACCEL_BIT_MASK << DISABLE_ACCEL_BIT_INDEX)) | thisdata;
 
 		return writeRegister(0, REG_PWR_MGMT_2, data);
@@ -120,7 +120,7 @@ Icm20948ErrorCodes Icm20948Device::disableGyro(bool disable)
 		return success;
 	}
 	else {
-		uint16_t thisdata = (((disable ? 0x01 : 0x00) & DISABLE_GYRO_BIT_MASK) << DISABLE_GYRO_BIT_INDEX);
+		uint16_t thisdata = (((disable ? 0xFF : 0x00) & DISABLE_GYRO_BIT_MASK) << DISABLE_GYRO_BIT_INDEX);
 		data = (data & ~(DISABLE_GYRO_BIT_MASK << DISABLE_GYRO_BIT_INDEX)) | thisdata;
 
 		return writeRegister(0, REG_PWR_MGMT_2, data);
