@@ -14,7 +14,8 @@ typedef enum {
 	FAILED_TO_READ_WORD_DATA,
 	DEVICE_NOT_OPEN,
 	INVALID_USER_BANK,
-	INVALID_ACCEL_RANGE
+	INVALID_ACCEL_RANGE,
+	INVALID_WOM_THRESHOLD
 }Icm20948ErrorCodes;
 
 typedef enum {
@@ -36,9 +37,11 @@ public:
 	Icm20948ErrorCodes whoAmI(ICM_20948_WHO_AM_I_t& out_t);
 	Icm20948ErrorCodes sleep(bool sleepOrWake);
 	Icm20948ErrorCodes getRawAcceleration(std::vector<int16_t>& accel);
-	Icm20948ErrorCodes getAcceleration(std::vector<float>& accel);
+	Icm20948ErrorCodes getAcceleration(std::vector<float>& accel_g);
 	Icm20948ErrorCodes getAccelFS(AccelScale& accel_fs_sel);
 	Icm20948ErrorCodes setAccelFS(AccelScale accel_fs_sel);
+	Icm20948ErrorCodes getWomThreshold(unsigned int& threshold_mg);
+	Icm20948ErrorCodes setWomThreshold(unsigned int threshold_mg);
 
 private:
 	std::ostream& debugStream_;

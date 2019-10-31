@@ -99,7 +99,7 @@ Icm20948ErrorCodes Icm20948Device::getRawAcceleration(std::vector<int16_t>& acce
 	return SUCCESS;
 }
 
-Icm20948ErrorCodes Icm20948Device::getAcceleration(std::vector<float>& accel)
+Icm20948ErrorCodes Icm20948Device::getAcceleration(std::vector<float>& accel_g)
 {
 	Icm20948ErrorCodes success;
 	std::vector<int16_t> raw_accel = { 0,0,0 };
@@ -302,12 +302,55 @@ Icm20948ErrorCodes Icm20948Device::setAccelFS(AccelScale accel_fs_sel)
 		return success;
 	}
 
-	uint16_t thisdata = ((accel_fs_sel & ACCEL_FS_SEL_BIT_MASK) << ACCEL_FS_SEL_BIT_INDEX);
+	uint8_t thisdata = ((accel_fs_sel & ACCEL_FS_SEL_BIT_MASK) << ACCEL_FS_SEL_BIT_INDEX);
 	data = (data & ~(ACCEL_FS_SEL_BIT_MASK << ACCEL_FS_SEL_BIT_INDEX)) | thisdata;
 
 	success = writeRegister(2, REG_ACCEL_CONFIG, data);
 	if (SUCCESS != success) {
 		debugStream_ << "Failed to write Accel FS register." << std::endl;
+		return success;
+	}
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::getWomThreshold(unsigned int& threshold_mg)
+{
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
+	}
+
+	__s32 res = -1;
+	Icm20948ErrorCodes success = readRegister(2, REG_ACCEL_WOM_THR, res);
+
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to read register!" << std::endl;
+		return success;
+	}
+
+	// 4mg per LSB (from datasheet)
+	threshold_mg = 4*(unsigned int)((res >> WOM_THRESHOLD_BIT_INDEX) & WOM_THRESHOLD_BIT_MASK);
+
+	return SUCCESS;
+}
+
+Icm20948ErrorCodes Icm20948Device::setWomThreshold(unsigned int threshold_mg)
+{
+
+	if (!is_open_) {
+		debugStream_ << "Device not open.  Call openDevice() first." << std::endl;
+		return DEVICE_NOT_OPEN;
+	}
+
+	if (!(threshold_mg >= 0 && threshold_mg <= 1020)) {
+		debugStream_ << "Invalid WOM Threshold.  Must be 0-1020mg." << std::endl;
+		return INVALID_ACCEL_RANGE;
+	}
+
+	Icm20948ErrorCodes success = writeRegister(2, REG_ACCEL_WOM_THR, (__u8)(threshold_mg/4));
+	if (SUCCESS != success) {
+		debugStream_ << "Failed to write WOM Thresh register." << std::endl;
 		return success;
 	}
 
