@@ -553,7 +553,14 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 		return success;
 	}
 
-	data = i2c_smbus_read_byte_data(device_file_, register_name);
+	unsigned int tries = 0;
+	do {
+		debugStream_ << "Attempting to read register. Try " << tries + 1 << " of 3" << std::endl;
+		data = i2c_smbus_read_byte_data(device_file_, register_name);
+		tries += 1;
+		usleep(10000);
+	} while (data < 0 && tries < 3);
+	
 	if (data < 0) {
 		debugStream_ << "Failed to read data!" << std::endl;
 		return FAILED_TO_READ_DATA;
@@ -589,7 +596,17 @@ Icm20948ErrorCodes Icm20948Device::writeRegister(
 		<< " ( User Bank " << std::dec << std::setw(1) << user_bank << ")"
 		<< ": Data = " << "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
 
-	__s32 ret = i2c_smbus_write_byte_data(device_file_, register_name, data);
+
+	__s32 ret = 0;
+
+	unsigned int tries = 0;
+	do {
+		debugStream_ << "Attempting to write to register. Try " << tries + 1 << " of 3" << std::endl;
+		ret = i2c_smbus_write_byte_data(device_file_, register_name, data);
+		tries += 1;
+		usleep(10000);
+	} while (ret < 0 && tries < 3);
+
 	if (ret < 0) {
 		debugStream_ << "Failed to write data!" << std::endl;
 		return FAILED_TO_READ_DATA;
