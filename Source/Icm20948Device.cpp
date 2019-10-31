@@ -259,6 +259,7 @@ Icm20948ErrorCodes Icm20948Device::readRegister(
 	else {
 		debugStream_ << "Successfully read data from register "
 			<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(register_name) 
+			<< " ( User Bank " << std::dec << std::setw(1) << user_bank << ")"
 			<< ": Data = "<< "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
 	}
 
@@ -283,6 +284,7 @@ Icm20948ErrorCodes Icm20948Device::writeRegister(
 
 	debugStream_ << "Writing data to register "
 		<< "0x" << std::hex << std::setw(2) << std::setfill('0') <<unsigned(register_name)
+		<< " ( User Bank " << std::dec << std::setw(1) << user_bank << ")"
 		<< ": Data = " << "0x" << std::hex << std::setw(2) << std::setfill('0') << unsigned(data) << std::endl;
 
 	__s32 ret = i2c_smbus_write_byte_data(device_file_, register_name, data);
