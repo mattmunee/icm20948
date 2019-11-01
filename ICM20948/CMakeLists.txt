@@ -28,5 +28,3 @@ include_directories("../Include")
 
 add_executable(${PROJECT_NAME} ${ICM20948_SRC} ${ICM20948_INC})
 
-target_link_libraries(${PROJECT_NAME})
-
