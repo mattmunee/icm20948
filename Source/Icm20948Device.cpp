@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include <linux/i2c-dev.h>
+//#include <sys/ioctl.h>
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
@@ -526,6 +527,8 @@ Icm20948ErrorCodes Icm20948Device::goToLowPowerWomMode(
 		debugStream_ << "Failed to clearInterrupts!" << std::endl;
 		return success;
 	}
+    
+    return SUCCESS;
 		
 }
 

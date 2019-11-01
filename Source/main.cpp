@@ -12,10 +12,13 @@ int main(int argc, char *argv[]) {
 	Icm20948ErrorCodes success;
 	std::vector<int16_t> rawaccel = {0,0,0};
 	std::vector<float> accel = { 0.0,0.0,0.0 };
-	unsigned int womThreshold = 0;
+	unsigned int womThreshold = 100;
+    unsigned int accelSampleRate_Hz = 100;
+    ICM_20948_WOM_ALGORITHM algo = ALGO_RUNNING_COMPARISON_CURRENT_TO_PREVIOUS;
 
 	success = dev.openDevice();
 	if (SUCCESS != success) {
+        std::cout.flags(f);
 		std::cout << "Error! Failed to open device: " << success << std::endl;
 	}
 	else {
@@ -45,7 +48,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	std::cout << "Go to Low Power" << std::endl;
-	success = dev.goToLowPowerWomMode(100,100,ALGO_RUNNING_COMPARISON_CURRENT_TO_PREVIOUS);
+	success = dev.goToLowPowerWomMode(accelSampleRate_Hz,womThreshold,algo);
 	if (SUCCESS != success) {
 		std::cout << "Failed to go to Low Power! Return Value: " << (unsigned)success << std::endl;
 	}	

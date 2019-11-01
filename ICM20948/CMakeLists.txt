@@ -19,6 +19,14 @@ file(GLOB_RECURSE ICM20948_INC
 	"../Include/*.h"
 )
 
+if(CMAKE_CROSSCOMPILING)
+    set(CMAKE_SYSROOT_COMPILE ${SYSROOT})
+    include_directories(${SYSROOT}/usr/include/arm-linux-gnueabihf)
+endif()
+
 include_directories("../Include")
 
 add_executable(${PROJECT_NAME} ${ICM20948_SRC} ${ICM20948_INC})
+
+target_link_libraries(${PROJECT_NAME})
+
