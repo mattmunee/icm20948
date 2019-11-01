@@ -7,12 +7,6 @@
 #include <iostream>
 #include <vector>
 
-//#if !defined(__arm__)
-//extern "C" {
-//#include <i2c/smbus.h>
-//}
-//#endif
-
 typedef enum {
 	SUCCESS,
 	FAILED_TO_OPEN_ADAPTER,

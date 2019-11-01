@@ -2,7 +2,6 @@
 #include <sstream>
 #include <iomanip>
 #include <linux/i2c-dev.h>
-//#include <sys/ioctl.h>
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
